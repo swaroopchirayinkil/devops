@@ -1,0 +1,5 @@
+
+
+
+ch = input('enter character:') [0]
+print(ch)
