@@ -1,0 +1,33 @@
+#!/bin/bash
+echo "###Installing Apache..."
+        yum install httpd -y > /usr/local/src/httpd.log
+echo "---Apache Installed"
+echo "###Installing php and php-mysql..."
+        yum install php php-mysql -y > /usr/local/src/php.log
+echo "---php and php-mysql are Installed"
+echo "###Installing php modules..."
+        yum install php* -y > /usr/local/src/php_modules.log
+echo "---php modules installed"
+echo "###Restarting Apchae service..."
+        service httpd restart
+echo "---Apchae restarted"
+echo "###Updating apache configurations.."
+        sed -i '95i\ServerName localhost' /etc/httpd/conf/httpd.conf
+echo "---Apache configurations updated"
+echo "###Restarting and Enabling httpd service..."
+        service httpd restart
+        systemctl enable httpd
+echo "---Restarted and Enabled the service"
+echo "###Configuring firewall configurations to allow apache"
+        firewall-cmd --permanent --zone=public --add-service=http
+        firewall-cmd --permanent --zone=public --add-service=https
+        firewall-cmd --reload
+echo "---Firewall configurations updated"
+echo "###Installing MariaDB..."
+        yum install mariadb-server -y > /usr/local/src/mariadb.log
+echo "---MariaDB installed"
+echo "###Starting and Enabling the MariaDB service.."
+        systemctl start mariadb
+        systemctl enable mariadb
+echo "---Started and Enabled MariaDB service"
+echo "---Installation of LAMP compleated"
